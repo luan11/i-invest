@@ -7,7 +7,6 @@ import {
   OAuthCredential,
   User,
 } from 'firebase/auth';
-import { useHistory } from 'react-router-dom';
 
 import { auth, provider } from '../auth/config';
 
@@ -19,7 +18,7 @@ interface AuthContextData {
   isLoading: boolean;
   isLoadingButton: boolean;
   isAuthenticated: boolean | null;
-  login: () => void;
+  login: (callback: () => void) => void;
   logout: () => void;
 }
 
@@ -38,13 +37,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [isLoadingButton, setIsLoadingButton] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  const history = useHistory();
-
-  function goToDashboard() {
-    history.push(`/dashboard`);
-  }
-
-  function login() {
+  function login(callback: () => void) {
     setIsLoadingButton(true);
 
     signInWithPopup(auth, provider)
@@ -55,7 +48,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         setToken(credential?.accessToken);
         setUser(result.user);
         setIsAuthenticated(true);
-        goToDashboard();
+        callback();
       })
       .catch((error) => {
         setError(error.message);

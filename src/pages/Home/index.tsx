@@ -43,7 +43,9 @@ function Home() {
             leftIcon={isAuthenticated ? <AiOutlineArrowRight /> : <BsGoogle />}
             size={buttonSize}
             colorScheme="green"
-            onClick={isAuthenticated ? goToDashboard : login}
+            onClick={
+              isAuthenticated ? goToDashboard : () => login(goToDashboard)
+            }
             isLoading={isLoadingButton}
           >
             Acessar
