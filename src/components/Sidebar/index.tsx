@@ -1,12 +1,16 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, Avatar } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
-import { AiOutlineDashboard, AiOutlineFileText } from 'react-icons/ai';
-import { IoExitOutline } from 'react-icons/io5';
+import { AiOutlineDashboard, AiOutlineTags } from 'react-icons/ai';
+import { FiTrendingUp } from 'react-icons/fi';
+import { IoExitOutline, IoBulbOutline } from 'react-icons/io5';
+
+import useAuth from '../../hooks/useAuth';
 
 import Logo from '../Logo';
 import SidebarLink from '../../ui/SidebarLink';
 
 function Sidebar() {
+  const { logout } = useAuth();
   const { pathname } = useLocation();
 
   if (pathname === `/`) {
@@ -15,6 +19,7 @@ function Sidebar() {
 
   return (
     <Flex
+      as="header"
       flexDirection="column"
       h="100vh"
       w="20vw"
@@ -24,22 +29,41 @@ function Sidebar() {
     >
       <Logo />
 
-      <Flex marginTop="6" flexDirection="column" flex="1">
+      <Flex
+        w="full"
+        alignItems="center"
+        px="6"
+        py="2"
+        mt="4"
+        mb="2"
+        color="gray.700"
+      >
+        <Avatar name="Luan Novais" mr="2" bg="gray.400" color="white" />
+        Bem-vindo(a), Luan
+      </Flex>
+
+      <Flex flexDirection="column" flex="1">
         <SidebarLink
-          pathname={pathname}
           to="/dashboard"
           Icon={AiOutlineDashboard}
-          text="Dashboard"
+          text="Visão Geral"
         />
 
         <SidebarLink
-          pathname={pathname}
-          to="/papers"
-          Icon={AiOutlineFileText}
-          text="Papéis"
+          to="/categories"
+          Icon={AiOutlineTags}
+          text="Minhas Categorias"
         />
 
-        <SidebarLink Icon={IoExitOutline} text="Sair" isExit />
+        <SidebarLink
+          to="/investments"
+          Icon={FiTrendingUp}
+          text="Meus Investimentos"
+        />
+
+        <SidebarLink to="/dayTip" Icon={IoBulbOutline} text="Dica do Dia" />
+
+        <SidebarLink Icon={IoExitOutline} text="Sair" isExit onClick={logout} />
       </Flex>
     </Flex>
   );

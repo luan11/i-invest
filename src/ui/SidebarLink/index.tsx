@@ -1,12 +1,11 @@
 import { ComponentType } from 'react';
 import { Link, Text } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useLocation, Link as RouterLink } from 'react-router-dom';
 
 interface SidebarLinkProps {
   to?: string;
   Icon: ComponentType;
   text: string;
-  pathname?: string;
   isExit?: boolean;
   onClick?: () => void;
 }
@@ -15,10 +14,11 @@ function SidebarLink({
   to = `/`,
   Icon,
   text,
-  pathname = `/`,
   isExit = false,
   onClick,
 }: SidebarLinkProps) {
+  const { pathname } = useLocation();
+
   const isActive = to === pathname;
 
   if (isExit) {
