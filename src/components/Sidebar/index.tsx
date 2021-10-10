@@ -10,8 +10,18 @@ import Logo from '../Logo';
 import SidebarLink from '../../ui/SidebarLink';
 
 function Sidebar() {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const { pathname } = useLocation();
+
+  function getUserFirstName() {
+    if (user) {
+      const splitted = user.displayName?.split(` `);
+
+      return splitted ? splitted[0] : ``;
+    } else {
+      return ``;
+    }
+  }
 
   if (pathname === `/`) {
     return null;
@@ -38,8 +48,14 @@ function Sidebar() {
         mb="2"
         color="gray.700"
       >
-        <Avatar name="Luan Novais" mr="2" bg="gray.400" color="white" />
-        Bem-vindo(a), Luan
+        <Avatar
+          name={user?.displayName ?? undefined}
+          src={user?.photoURL ?? undefined}
+          mr="2"
+          bg="gray.400"
+          color="white"
+        />
+        Bem-vindo(a), {getUserFirstName()}
       </Flex>
 
       <Flex flexDirection="column" flex="1">
