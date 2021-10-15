@@ -9,6 +9,7 @@ import {
 } from 'firebase/auth';
 
 import { auth, provider } from '../auth/config';
+import { useToast } from '@chakra-ui/toast';
 
 interface AuthContextData {
   credential: OAuthCredential | null;
@@ -37,7 +38,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [isLoadingButton, setIsLoadingButton] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
+  const toast = useToast();
+
   function login(callback: () => void) {
+    setError(``);
     setIsLoadingButton(true);
 
     signInWithPopup(auth, provider)
@@ -61,6 +65,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   function logout() {
+    setError(``);
     setIsLoading(true);
 
     signOut(auth).finally(() => {
@@ -71,6 +76,19 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       setIsAuthenticated(false);
     });
   }
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: `Algo deu errado`,
+        description: error,
+        variant: `left-accent`,
+        position: `top-right`,
+        isClosable: true,
+        status: `error`,
+      });
+    }
+  }, [error, toast]);
 
   useEffect(() => {
     setIsLoading(true);

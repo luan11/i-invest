@@ -21,7 +21,7 @@ function Router() {
       <Flex>
         {isAuthenticated && <Sidebar />}
 
-        <Flex as="main" flex="1" flexDirection="column">
+        <Flex as="main" flex="1" flexDirection="column" minH="100vh">
           <Switch>
             <Route path="/" exact>
               <Home />
